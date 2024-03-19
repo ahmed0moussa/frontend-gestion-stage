@@ -9,39 +9,9 @@ export const MENU: MenuItem[] = [
     {
         id: 2,
         label: 'MENUITEMS.DASHBOARD.TEXT',
+        link: '/',
         icon: 'ph-gauge',
-        subItems: [
-            {
-                id: 3,
-                label: 'MENUITEMS.DASHBOARD.LIST.ANALYTICS',
-                link: '/',
-                parentId: 2
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.DASHBOARD.LIST.CRM',
-                link: '/',
-                parentId: 2
-            },
-            {
-                id: 5,
-                label: 'MENUITEMS.DASHBOARD.LIST.ECOMMERCE',
-                link: '/',
-                parentId: 2
-            },
-            {
-                id: 6,
-                label: 'MENUITEMS.DASHBOARD.LIST.LEARNING',
-                link: '/',
-                parentId: 2
-            },
-            {
-                id: 7,
-                label: 'MENUITEMS.DASHBOARD.LIST.REALESTATE',
-                link: '/',
-                parentId: 2
-            }
-        ]
+        
     },
     {
         id: 8,

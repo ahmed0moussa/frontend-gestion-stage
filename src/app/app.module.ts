@@ -48,6 +48,7 @@ import { InstructorEffects } from './store/Learning-instructor/instructor.effect
 import { CustomerEffects } from './store/Customer/customer.effects';
 import { studentsEffects } from './store/students/student.effcts';
 import { CourcesEffects } from './store/Learning-cources/cources.effect';
+import { RouterModule } from '@angular/router';
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -109,7 +110,9 @@ if (environment.defaultauth === 'firebase') {
     ToastrModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    RouterModule.forRoot([
+    ])
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

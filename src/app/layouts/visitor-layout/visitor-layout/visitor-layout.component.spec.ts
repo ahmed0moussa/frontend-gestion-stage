@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TwoColumnComponent } from './two-column.component';
+import { VisitorLayoutComponent } from './visitor-layout.component';
 
-describe('TwoColumnComponent', () => {
-  let component: TwoColumnComponent;
-  let fixture: ComponentFixture<TwoColumnComponent>;
+describe('VisitorLayoutComponent', () => {
+  let component: VisitorLayoutComponent;
+  let fixture: ComponentFixture<VisitorLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TwoColumnComponent ]
+      imports: [VisitorLayoutComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(TwoColumnComponent);
+    
+    fixture = TestBed.createComponent(VisitorLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

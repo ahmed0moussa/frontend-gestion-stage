@@ -1,0 +1,36 @@
+div ul li a {
+    color: #252b60;
+    font-weight: 500;
+    
+    font-family: "Barlow",sans-serif;
+    display: block;
+    font-size: 16px;
+    position: relative;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    
+}
+.carousel-item {
+    position: relative;
+    font-family: "Barlow",sans-serif;
+}
+.container .slide1{
+    position: absolute;
+  top: 90px;
+  right: 0;
+  
+}
+.container .slide2{
+    position: absolute;
+  top: 77px;
+  left: 90px;
+  
+}
+.container .slide3{
+    position: absolute;
+  top: 60px;
+  right: 0;
+  
+}
