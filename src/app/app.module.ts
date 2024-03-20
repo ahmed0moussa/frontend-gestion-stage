@@ -66,6 +66,7 @@ if (environment.defaultauth === 'firebase') {
 @NgModule({
   declarations: [AppComponent, AuthlayoutComponent],
   imports: [
+    
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -107,6 +108,7 @@ if (environment.defaultauth === 'firebase') {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    RouterModule ,
     LayoutsModule,
     ToastrModule.forRoot(),
     FormsModule,

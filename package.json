@@ -69,6 +69,7 @@
     "ngx-editor": "^16.0.1",
     "ngx-mask": "^17.0.0",
     "ngx-masonry": "^14.0.1",
+    "ngx-pagination": "^6.0.3",
     "ngx-pipes": "^3.2.2",
     "ngx-slick-carousel": "^17.0.0",
     "ngx-slider-v2": "^17.0.0",
