@@ -1,66 +1,99 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
+import { AuthenticationRequest } from 'src/app/models copy/authentication-request';
+import { AuthentficationService } from 'src/app/services/authentfication.service';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 
 // Login Component
 export class LoginComponent {
-
   // Login Form
-  loginForm!: UntypedFormGroup;
-  submitted = false;
+
   fieldTextType!: boolean;
-  error = '';
-  returnUrl!: string;
+
   a: any = 10;
   b: any = 20;
   toast!: false;
-
+  form!: FormGroup;
+  authenticationRequest: AuthenticationRequest = new AuthenticationRequest();
+  errorMsg!: String;
+  data: any;
+  token = JSON.parse(localStorage.getItem('accessToken')!);
+  Role: any;
   // set the current year
   year: number = new Date().getFullYear();
 
   // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: UntypedFormBuilder,
+  constructor(
+    private authService: AuthentficationService,
     private router: Router,
-    private store: Store,
-) { }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('currentUser')) {
-      this.router.navigate(['/']);
-    }
-    /**
-     * Form Validatyion
-     */
-    this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+    localStorage.removeItem('accessToken');
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
+  // on peut ajouter autres roles
+  login1() {
+    //console.log(this.form.value) : this.form.value : IL passe le contenue de login et password
+    console.log(this.form.value);
+    this.authService.loggin(this.form.value).subscribe(
+      (ress: any) => {
+        this.authService.setUserToken(ress);
+        const name = localStorage.getItem('email');
 
-  /**
-   * Form submit
-   */
-  onSubmit() {
-    this.submitted = true;
+        ////
+        localStorage.setItem('accessToken', JSON.stringify(ress));
+        this.Role = this.authService.getUserRole();
+        console.log('role', this.authService.getUserRole());
+        if (this.Role[0].authority == 'ADMINISTRATEUR') {
+          this.router.navigate(['/admin']);
+        } else if (this.Role[0].authority == 'USER') {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        this.errorMsg = 'login ou mot de pass incorect';
+      }
+    );
+  }
 
-    const email = this.f['email'].value; // Get the username from the form
-    const password = this.f['password'].value; // Get the password from the form
+  roleTestAdmin(roleAdmin: string): boolean {
+    if (roleAdmin == 'ADMINISTRATEUR') {
+      return true;
+    } else this.router.navigate(['/']);
 
-    // Login Api
-    this.store.dispatch(login({ email: email, password: password }));
+    return false;
+  }
+
+  roleTestUser(roleUser: string): boolean {
+    if (roleUser == 'UTILISATEUR') {
+      return true;
+    } else this.router.navigate(['/']);
+
+    return false;
   }
 
   /**
