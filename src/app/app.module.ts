@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HttpClient,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // auth
 import { AngularFireModule } from '@angular/fire/compat';
@@ -60,19 +64,16 @@ if (environment.defaultauth === 'firebase') {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AuthlayoutComponent
-  ],
+  declarations: [AppComponent, AuthlayoutComponent],
   imports: [
     
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
     }),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
@@ -100,7 +101,7 @@ if (environment.defaultauth === 'firebase') {
       CustomerEffects,
       studentsEffects,
       CourcesEffects,
-      InstructorEffects
+      InstructorEffects,
     ]),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,
@@ -113,14 +114,17 @@ if (environment.defaultauth === 'firebase') {
     FormsModule,
     ReactiveFormsModule,
     AngularFireAuthModule,
-    RouterModule.forRoot([
-    ])
+    RouterModule.forRoot([]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: fakebackendInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: fakebackendInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
