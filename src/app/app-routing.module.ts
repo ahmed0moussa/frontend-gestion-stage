@@ -5,7 +5,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layouts/layout.component';
 import { AuthlayoutComponent } from './authlayout/authlayout.component';
 import { AuthGuard } from './core/guards/auth.guard';
-import { VisitorLayoutComponent } from './layouts/visitor-layout/visitor-layout/visitor-layout.component';
+import { HomeRoutingModule } from './home/home-routing.module';
+import { HomeModule } from './home/home.module';
+import { VisitorLayoutComponent } from './home/visitor-layout/visitor-layout.component';
+import { PostesStageComponent } from './home/postes-stage/postes-stage.component';
+import { DescriptionStageComponent } from './home/description-stage/description-stage.component';
 
 
 const routes: Routes = [
@@ -15,6 +19,8 @@ const routes: Routes = [
   { path: 'home', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard] },
   { path: 'auth', component: AuthlayoutComponent, loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
   { path: 'visitor', component: VisitorLayoutComponent },
+  { path: 'Postestage', component: PostesStageComponent },
+  { path: 'DescriptionStage', component: DescriptionStageComponent },
 ];
 
 @NgModule({

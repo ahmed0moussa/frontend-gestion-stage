@@ -51,6 +51,7 @@ import { HorizontalComponent } from './horizontal/horizontal.component';
     FormsModule,
     ReactiveFormsModule,
     ModalModule,
+    RouterModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

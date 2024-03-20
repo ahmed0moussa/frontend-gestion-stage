@@ -1,4 +1,144 @@
 import { MenuItem } from "./menu.model";
+export const MENUADMIN: MenuItem[] = [
+    {
+        id: 1,
+        label: 'MENUITEMS.MENU.TEXT',
+        isTitle: true
+    },
+    {
+        id: 2,
+        label: 'MENUITEMS.DASHBOARD.TEXT',
+        link: '/',
+        icon: 'ph-gauge',
+        
+    },
+    {
+        id: 8,
+        label: 'MENUITEMS.APPS.TEXT',
+        isTitle: true
+    },
+    {
+        id: 9,
+        label: 'Gestion des comptes',
+        icon: 'ph-calendar',
+        link: '/gestiondescomptes',
+        parentId: 8
+    },
+    {
+        id: 10,
+        label: 'Gestion des rôles',
+        icon: 'ph-calendar',
+        link: '/',
+        parentId: 8
+    },
+    {
+        id: 11,
+        label: 'Affectation étudiant à un stage',
+        icon: 'ph-calendar',
+        link: '/',
+        parentId: 8
+    },
+    {
+        id: 12,
+        label: 'Gestion des postes des stages',
+        icon: 'ph-calendar',
+        link: '/',
+        parentId: 8
+    },
+    {
+        id: 13,
+        label: 'Suivi des évaluations de performance des stagiaires',
+        icon: 'ph-calendar',
+        link: '/',
+        parentId: 8
+    },
+    {
+        id: 13,
+        label: 'Gestion de stage',
+        icon: 'ph-calendar',
+        link: '/',
+        parentId: 8
+    },
+]
+    export const MENUSTAGIAIRES: MenuItem[] = [
+        {
+            id: 1,
+            label: 'MENUITEMS.MENU.TEXT',
+            isTitle: true
+        },
+        {
+            id: 2,
+            label: 'MENUITEMS.DASHBOARD.TEXT',
+            link: '/',
+            icon: 'ph-gauge',
+            
+        },
+        {
+            id: 8,
+            label: 'MENUITEMS.APPS.TEXT',
+            isTitle: true
+        },
+        {
+            id: 9,
+            label: 'Gestion des comptes',
+            icon: 'ph-calendar',
+            link: '/',
+            parentId: 8
+        },
+        {
+            id: 10,
+            label: 'Gestion des rôles',
+            icon: 'ph-calendar',
+            link: '/',
+            parentId: 8
+        },
+        {
+            id: 11,
+            label: 'Affectation étudiant à un stage',
+            icon: 'ph-calendar',
+            link: '/',
+            parentId: 8
+        },
+        {
+            id: 12,
+            label: 'Gestion des postes des stages',
+            icon: 'ph-calendar',
+            link: '/',
+            parentId: 8
+        },
+        {
+            id: 13,
+            label: 'Suivi des évaluations de performance des stagiaires',
+            icon: 'ph-calendar',
+            link: '/',
+            parentId: 8
+        },
+    ]
+        export const MENUENCADRANT: MenuItem[] = [
+            {
+                id: 1,
+                label: 'MENUITEMS.MENU.TEXT',
+                isTitle: true
+            },
+            {
+                id: 2,
+                label: 'MENUITEMS.DASHBOARD.TEXT',
+                link: '/',
+                icon: 'ph-gauge',
+                
+            },
+            {
+                id: 8,
+                label: 'MENUITEMS.APPS.TEXT',
+                isTitle: true
+            },
+            {
+                id: 9,
+                label: 'MENUITEMS.APPS.LIST.CALENDAR',
+                icon: 'ph-calendar',
+                link: '/',
+                parentId: 8
+            },]
 
 export const MENU: MenuItem[] = [
     {
