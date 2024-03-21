@@ -10,14 +10,25 @@ import { HomeModule } from './home/home.module';
 import { VisitorLayoutComponent } from './home/visitor-layout/visitor-layout.component';
 import { PostesStageComponent } from './home/postes-stage/postes-stage.component';
 import { DescriptionStageComponent } from './home/description-stage/description-stage.component';
-
+import { PassResetComponent } from './account/auth/ForgetPassword/pass-reset/pass-reset.component';
 
 const routes: Routes = [
   // { path: '', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard]  },
   // { path: 'auth', component: AuthlayoutComponent, loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard] },
-  { path: 'auth', component: AuthlayoutComponent, loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
+  {
+    path: 'home',
+    component: LayoutComponent,
+    loadChildren: () =>
+      import('./pages/pages.module').then((m) => m.PagesModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'auth',
+    component: AuthlayoutComponent,
+    loadChildren: () =>
+      import('./account/account.module').then((m) => m.AccountModule),
+  },
   { path: 'visitor', component: VisitorLayoutComponent },
   { path: 'Postestage', component: PostesStageComponent },
   { path: 'DescriptionStage', component: DescriptionStageComponent },
@@ -25,6 +36,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

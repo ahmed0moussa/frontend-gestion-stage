@@ -1,21 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { ReplaySubject, Observable } from 'rxjs';
+import { ChangePasswordResetRequest } from 'src/app/models copy/ModelsForgetPasword/change-password-reset-request';
+import { ConfirmationOTPcompte } from 'src/app/models copy/ModelsForgetPasword/confirmation-otpcompte';
+import { ResponseEmailpwdoub } from 'src/app/models copy/ModelsForgetPasword/response-emailpwdoub';
+import { Verifpwdemailoublier } from 'src/app/models copy/ModelsForgetPasword/verifpwdemailoublier';
+import { VerifyOtpPWDoublier } from 'src/app/models copy/ModelsForgetPasword/verify-otp-pwdoublier';
+import { AuthenticationRequest } from 'src/app/models copy/authentication-request';
+import { AuthenticationResponse } from 'src/app/models copy/authentication-response';
+import { RegisterRequest } from 'src/app/models copy/register-request';
 import { environment } from 'src/environments/environment';
-import { ChangePasswordResetRequest } from '../models copy/ModelsForgetPasword/change-password-reset-request';
-import { ConfirmationOTPcompte } from '../models copy/ModelsForgetPasword/confirmation-otpcompte';
-import { ResponseEmailpwdoub } from '../models copy/ModelsForgetPasword/response-emailpwdoub';
-import { Verifpwdemailoublier } from '../models copy/ModelsForgetPasword/verifpwdemailoublier';
-import { VerifyOtpPWDoublier } from '../models copy/ModelsForgetPasword/verify-otp-pwdoublier';
-import { AuthenticationRequest } from '../models copy/authentication-request';
-import { AuthenticationResponse } from '../models copy/authentication-response';
-import { RegisterRequest } from '../models copy/register-request';
 
 @Injectable({
   providedIn: 'root',
 })
-// on met tt les meth dans le service
 export class AuthentficationService {
   Role: any;
   isroleAdmin!: boolean;

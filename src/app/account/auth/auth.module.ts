@@ -11,12 +11,13 @@ import { NgOtpInputModule } from 'ng-otp-input';
 // Component
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { PassResetComponent } from './ForgetPassword/pass-reset/pass-reset.component';
 import { PassChangeComponent } from './pass-change/pass-change.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SuccessMsgComponent } from './success-msg/success-msg.component';
 import { TwostepComponent } from './twostep/twostep.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,14 @@ import { TwostepComponent } from './twostep/twostep.component';
     LockscreenComponent,
     LogoutComponent,
     SuccessMsgComponent,
-    TwostepComponent
+    TwostepComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     ErrorsModule,
-    NgOtpInputModule
-  ]
+    NgOtpInputModule,
+    ReactiveFormsModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

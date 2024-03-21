@@ -8,12 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { AuthentficationService } from 'src/app/core/services/servicesProject/authentfication.service';
 
 // Register Auth
 import { RegisterRequest } from 'src/app/models copy/register-request';
-import { AuthentficationService } from 'src/app/services/authentfication.service';
-import { Register } from 'src/app/store/Authentication/authentication.actions';
 
 @Component({
   selector: 'app-register',
@@ -62,9 +60,7 @@ export class RegisterComponent {
     console.log('ccc', this.formRegister.value);
     this.authService.register(this.formRegister.value).subscribe(
       (result) => {
-        console.log('aaaaaaa', result);
-
-        this.router.navigate(['/confirmationMailOTP']);
+        this.router.navigate(['/auth/mailVerifRegister']);
       },
       (err: HttpErrorResponse) => (this.errorMsg = 'this email is existe')
     );

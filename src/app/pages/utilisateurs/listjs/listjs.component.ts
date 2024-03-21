@@ -1,6 +1,14 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, FormArray, Validators, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  FormArray,
+  Validators,
+  FormControl,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
@@ -8,22 +16,22 @@ import { Observable } from 'rxjs';
 // Sweet Alert
 import Swal from 'sweetalert2';
 
-
-import { NgbdListSortableHeader, listSortEvent } from './listjs-sortable.directive';
+import {
+  NgbdListSortableHeader,
+  listSortEvent,
+} from './listjs-sortable.directive';
 import { ListJsModel } from './listjs.model';
 import { ListService } from './listjs.service';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-listjs',
   templateUrl: './listjs.component.html',
   styleUrls: ['./listjs.component.scss'],
-  providers: [ListService, DecimalPipe]
+  providers: [ListService, DecimalPipe],
 })
 export class ListjsComponent {
-
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   submitted = false;
@@ -46,58 +54,72 @@ export class ListjsComponent {
   // Table data
   ListJsList!: Observable<ListJsModel[]>;
   total: Observable<number>;
-  @ViewChildren(NgbdListSortableHeader) headers!: QueryList<NgbdListSortableHeader>;
-    @ViewChild('showModal', { static: false }) showModal?: ModalDirective;
-    @ViewChild('deleteModal', { static: false }) deleteModal?: ModalDirective;
-  constructor(public service: ListService, private formBuilder: UntypedFormBuilder, private pipe: DecimalPipe,private userService:UserProfileService,private toastr:ToastrService) {
+  @ViewChildren(NgbdListSortableHeader)
+  headers!: QueryList<NgbdListSortableHeader>;
+  @ViewChild('showModal', { static: false }) showModal?: ModalDirective;
+  @ViewChild('deleteModal', { static: false }) deleteModal?: ModalDirective;
+  constructor(
+    public service: ListService,
+    private formBuilder: UntypedFormBuilder,
+    private pipe: DecimalPipe,
+    private userService: UserProfileService,
+    private toastr: ToastrService
+  ) {
     this.ListJsList = service.countries$;
-    console.log(this.ListJsList )
+    console.log(this.ListJsList);
     this.total = service.total$;
   }
 
   ngOnInit(): void {
     /**
-    * BreadCrumb
-    */
+     * BreadCrumb
+     */
     this.breadCrumbItems = [
       { label: 'Utilisateurs' },
-      { label: 'List', active: true }
+      { label: 'List', active: true },
     ];
 
     /**
-   * Form Validation
-   */
+     * Form Validation
+     */
     this.listJsForm = this.formBuilder.group({
       ids: [''],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email,this.emailPatternValidator()]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(40)]],
-      cpassword: ['', Validators.required]
+      email: [
+        '',
+        [Validators.required, Validators.email, this.emailPatternValidator()],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(40),
+        ],
+      ],
+      cpassword: ['', Validators.required],
     });
 
-this.findall();
+    this.findall();
     /**
      * fetches data
      */
-    this.ListJsList.subscribe(x => {
-     this.ListJsDatas = Object.assign([], x);
-     });
-    
-    
-    
+    this.ListJsList.subscribe((x) => {
+      this.ListJsDatas = Object.assign([], x);
+    });
   }
   findall() {
-    this.userService.fiddalluser().subscribe(
-      (user) => {
-        this.ListJsDatas = user;
-        console.log(user)
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-        // Handle error as needed
-      }
-    );
+    // this.userService.fiddalluser().subscribe(
+    //   (user) => {
+    //     this.ListJsDatas = user;
+    //     console.log(user)
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //     // Handle error as needed
+    //   }
+    // );
   }
 
   tablepageChanged(event: PageChangedEvent): void {
@@ -124,8 +146,8 @@ this.findall();
   }
 
   /**
-  * Save saveListJs
-  */
+   * Save saveListJs
+   */
   // saveListJs() {
   //   if (this.listJsForm.valid) {
   //     if (this.listJsForm.get('ids')?.value) {
@@ -134,9 +156,8 @@ this.findall();
   //       const firstName = this.listJsForm.get('firstName')?.value;
   //       const lastName = this.listJsForm.get('lastName')?.value;
   //       const email = this.listJsForm.get('email')?.value;
-       
+
   //       const password = this.listJsForm.get('password')?.value;
-      
 
   //     }
   //   }
@@ -147,21 +168,19 @@ this.findall();
   //   this.submitted = true
   // }
   saveListJs() {
-    this.submitted=true;
+    this.submitted = true;
     if (this.listJsForm.valid) {
-      
       const formData = { ...this.listJsForm.value };
       // const user: User = {};
-  
+
       if (formData.ids) {
         console.log(formData);
         // Update existing data
         this.ListJsDatas = this.ListJsDatas.map((data: { id: any }) =>
           data.id === formData.ids ? { ...data, ...formData } : data
-          
         );
         // user.id = formData.ids;
-        
+
         // this.userService.updateUser(formData.ids, formData).subscribe(
         //   () => {
         //     console.log('User updated successfully', formData);
@@ -186,7 +205,7 @@ this.findall();
         //   }
         // );
       }
-  
+
       // Reset form and other actions
       this.showModal?.hide();
       setTimeout(() => {
@@ -204,36 +223,42 @@ this.findall();
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll(ev: any) {
-    this.ListJsDatas.forEach((x: { state: any; }) => x.state = ev.target.checked)
+    this.ListJsDatas.forEach(
+      (x: { state: any }) => (x.state = ev.target.checked)
+    );
     var checkedVal: any[] = [];
-    var result
+    var result;
     for (var i = 0; i < this.ListJsDatas.length; i++) {
       if (this.ListJsDatas[i].state == true) {
         result = this.ListJsDatas[i].id;
         checkedVal.push(result);
       }
     }
-    this.checkedValGet = checkedVal
-    checkedVal.length > 0 ? (document.getElementById("remove-actions") as HTMLElement).style.display = "block" : (document.getElementById("remove-actions") as HTMLElement).style.display = "none";
-
+    this.checkedValGet = checkedVal;
+    checkedVal.length > 0
+      ? ((
+          document.getElementById('remove-actions') as HTMLElement
+        ).style.display = 'block')
+      : ((
+          document.getElementById('remove-actions') as HTMLElement
+        ).style.display = 'none');
   }
   isAllChecked() {
-    return this.ListJsDatas.every((_: { state: any; }) => _.state);
+    return this.ListJsDatas.every((_: { state: any }) => _.state);
   }
 
   /**
-  * Confirmation mail model
-  */
+   * Confirmation mail model
+   */
   deleteId: any;
   confirm(id: any) {
     this.deleteId = id;
     this.deleteModal?.show();
   }
 
-
   /**
-  * Multiple Delete
-  */
+   * Multiple Delete
+   */
   checkedValGet: any[] = [];
 
   // Delete Data
@@ -251,7 +276,6 @@ this.findall();
       //     console.error('Error deleting user:', error);
       //   }
       // );
-
     }
     this.checkedValGet.forEach((item: any) => {
       document.getElementById('a_' + item)?.remove();
@@ -262,15 +286,15 @@ this.findall();
   }
 
   /**
-  * Open modal
-  * @param content modal content
-  */
+   * Open modal
+   * @param content modal content
+   */
   editModal(id: any) {
     this.submitted = false;
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
 
-    updateBtn.innerHTML = "Update";
-    this.showModal?.show()
+    updateBtn.innerHTML = 'Update';
+    this.showModal?.show();
     var listData = this.ListJsDatas[id];
     this.listJsForm.controls['firstName'].setValue(listData.firstName);
     this.listJsForm.controls['lastName'].setValue(listData.lastName);
@@ -281,20 +305,24 @@ this.findall();
   // Sorting
   sortname() {
     this.ListJsDatas.sort(function (a: any, b: any) {
-      if (a.firstName < b.firstName) { return -1; }
-      if (a.lasttName > b.lastName) { return 1; }
+      if (a.firstName < b.firstName) {
+        return -1;
+      }
+      if (a.lasttName > b.lastName) {
+        return 1;
+      }
       return 0;
-    })
+    });
   }
 
   /**
-* Sort table data
-* @param param0 sort the column
-*
-*/
+   * Sort table data
+   * @param param0 sort the column
+   *
+   */
   onSort({ column, direction }: listSortEvent) {
     // resetting other headers
-    this.headers.forEach(header => {
+    this.headers.forEach((header) => {
       if (header.listsortable !== column) {
         header.direction = '';
       }
@@ -303,5 +331,4 @@ this.findall();
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
-
 }

@@ -4,12 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 // component
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { PassResetComponent } from './ForgetPassword/pass-reset/pass-reset.component';
 import { PassChangeComponent } from './pass-change/pass-change.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SuccessMsgComponent } from './success-msg/success-msg.component';
 import { TwostepComponent } from './twostep/twostep.component';
+import { MailVerifRegisterComponent } from './mail-verif-register/mail-verif-register.component';
+import { CodeVerifPWDoublierComponent } from './ForgetPassword/code-verif-pwdoublier/code-verif-pwdoublier.component';
+import { CreerNvPasswordComponent } from './ForgetPassword/creer-nv-password/creer-nv-password.component';
 
 const routes: Routes = [
   {
@@ -45,7 +48,22 @@ const routes: Routes = [
     component: TwostepComponent,
   },
   {
-    path: 'errors', loadChildren: () => import('./errors/errors.module').then(m => m.ErrorsModule)
+    path: 'mailVerifRegister',
+    component: MailVerifRegisterComponent,
+  },
+
+  {
+    path: 'codeVerifPWDoublierComponent',
+    component: CodeVerifPWDoublierComponent,
+  },
+  {
+    path: 'creerNvPasswordComponent',
+    component: CreerNvPasswordComponent,
+  },
+  {
+    path: 'errors',
+    loadChildren: () =>
+      import('./errors/errors.module').then((m) => m.ErrorsModule),
   },
 ];
 
@@ -53,4 +71,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}

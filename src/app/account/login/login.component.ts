@@ -8,10 +8,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthenticationService } from 'src/app/core/services/auth.service';
-import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
+import { AuthentficationService } from 'src/app/core/services/servicesProject/authentfication.service';
 import { AuthenticationRequest } from 'src/app/models copy/authentication-request';
-import { AuthentficationService } from 'src/app/services/authentfication.service';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 
 @Component({
@@ -67,11 +65,11 @@ export class LoginComponent {
         this.Role = this.authService.getUserRole();
         console.log('role', this.authService.getUserRole());
         if (this.Role[0].authority == 'ADMINISTRATEUR') {
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/home']);
         } else if (this.Role[0].authority == 'USER') {
-          this.router.navigate(['/']);
+          this.router.navigate(['/visitor']);
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(['/visitor']);
         }
       },
       (error) => {
