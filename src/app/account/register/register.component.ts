@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { AuthentficationService } from 'src/app/core/services/servicesProject/authentfication.service';
 
 // Register Auth
-import { RegisterRequest } from 'src/app/models copy/register-request';
+import { RegisterRequest } from 'src/app/core/models/register-request';
 
 @Component({
   selector: 'app-register',

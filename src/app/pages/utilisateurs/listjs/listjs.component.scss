@@ -1,0 +1,11 @@
+.edit-button-yellow {
+    background-color: #ffbd07; /* Couleur jaune motard */
+    color: #000; /* Couleur du texte */
+    border-color: #ffc107; /* Couleur de la bordure */
+}
+
+.edit-button-yellow:hover {
+    background-color: #ffa000; /* Couleur jaune motard foncée au survol */
+    border-color: #ffa000; /* Couleur de la bordure au survol */
+    color: #fff; /* Couleur du texte au survol */
+}

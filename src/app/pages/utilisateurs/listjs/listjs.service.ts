@@ -9,6 +9,7 @@ import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { SortColumn, SortDirection } from './listjs-sortable.directive';
 import { UserProfileService } from 'src/app/core/services/user.service';
+import { GestionUsersService } from 'src/app/core/services/servicesProject/gestion-users.service';
 
 interface SearchResult {
   countries: ListJsModel[];
@@ -46,11 +47,10 @@ function sort(
 
 function matches(country: ListJsModel, term: string, pipe: PipeTransform) {
   return (
-    country.customer_name.toLowerCase().includes(term.toLowerCase()) ||
+    country.firstname.toLowerCase().includes(term.toLowerCase()) ||
     country.email.toLowerCase().includes(term.toLowerCase()) ||
-    country.phone.toLowerCase().includes(term.toLowerCase()) ||
-    country.date.toLowerCase().includes(term.toLowerCase()) ||
-    country.status.toLowerCase().includes(term.toLowerCase())
+    country.lastname.toLowerCase().includes(term.toLowerCase()) ||
+    country.role.toLowerCase().includes(term.toLowerCase())
   );
 }
 
@@ -74,7 +74,7 @@ export class ListService {
 
   constructor(
     private pipe: DecimalPipe,
-    private userService: UserProfileService
+    private userService: GestionUsersService
   ) {
     this._search$
       .pipe(
@@ -145,15 +145,15 @@ export class ListService {
   private _search(): Observable<SearchResult> {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } =
       this._state;
-    // this.userService.fiddalluser().subscribe(
-    //   (user) => {
-    //     this.ListJs = user; // Assuming the API response structure is similar to ListJsDatas
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching data:', error);
-    //     // Handle error as needed
-    //   }
-    // );
+    this.userService.getAllUsers().subscribe(
+      (user) => {
+        this.ListJs = user; // Assuming the API response structure is similar to ListJsDatas
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        // Handle error as needed
+      }
+    );
     // 1. sort
     let countries = sort(this.ListJs, sortColumn, sortDirection);
 

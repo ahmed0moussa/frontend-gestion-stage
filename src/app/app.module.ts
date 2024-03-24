@@ -54,6 +54,8 @@ import { studentsEffects } from './store/students/student.effcts';
 import { CourcesEffects } from './store/Learning-cources/cources.effect';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { authInterceptorProviders } from './core/helpers/auth.interceptor';
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -116,16 +118,17 @@ if (environment.defaultauth === 'firebase') {
     ReactiveFormsModule,
     AngularFireAuthModule,
     RouterModule.forRoot([]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('accessToken');
+        },
+        allowedDomains: ['http://localhost:8091/api/v1'],
+        disallowedRoutes: ['http://localhost:8091/api/v1/auth/login'], // Remplacez par vos routes interdites
+      },
+    }),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: fakebackendInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

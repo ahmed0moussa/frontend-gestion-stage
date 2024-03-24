@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthentficationService } from 'src/app/core/services/servicesProject/authentfication.service';
-import { AuthenticationRequest } from 'src/app/models copy/authentication-request';
+import { AuthenticationRequest } from 'src/app/core/models/authentication-request';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 
 @Component({
@@ -65,11 +65,13 @@ export class LoginComponent {
         this.Role = this.authService.getUserRole();
         console.log('role', this.authService.getUserRole());
         if (this.Role[0].authority == 'ADMINISTRATEUR') {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/Admin']);
         } else if (this.Role[0].authority == 'USER') {
           this.router.navigate(['/visitor']);
-        } else {
-          this.router.navigate(['/visitor']);
+        } else if (this.Role[0].authority == 'ENCADRANT') {
+          this.router.navigate(['/Admin']);
+        } else if (this.Role[0].authority == 'STAGIAIRE') {
+          this.router.navigate(['/Admin']);
         }
       },
       (error) => {

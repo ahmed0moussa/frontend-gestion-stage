@@ -21,9 +21,13 @@ import {
   listSortEvent,
 } from './listjs-sortable.directive';
 import { ListJsModel } from './listjs.model';
-import { ListService } from './listjs.service';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { GestionUsersService } from 'src/app/core/services/servicesProject/gestion-users.service';
+import { GestionRolesService } from 'src/app/core/services/servicesProject/gestion-roles.service';
+import { User } from 'src/app/core/models/user';
+import { Role } from 'src/app/core/models/role';
+import { ListService } from './listjs.service';
 
 @Component({
   selector: 'app-listjs',
@@ -50,6 +54,8 @@ export class ListjsComponent {
   fuzzyTerm: any;
   dataterm: any;
   term: any;
+  roles!: any;
+  defaultRole!: any;
 
   // Table data
   ListJsList!: Observable<ListJsModel[]>;
@@ -62,8 +68,9 @@ export class ListjsComponent {
     public service: ListService,
     private formBuilder: UntypedFormBuilder,
     private pipe: DecimalPipe,
-    private userService: UserProfileService,
-    private toastr: ToastrService
+    private userService: GestionUsersService,
+    private toastr: ToastrService,
+    private roleService: GestionRolesService
   ) {
     this.ListJsList = service.countries$;
     console.log(this.ListJsList);
@@ -80,16 +87,19 @@ export class ListjsComponent {
     ];
 
     /**
-     * Form Validation
+     * Form for Validation
      */
     this.listJsForm = this.formBuilder.group({
-      ids: [''],
-      lastName: ['', Validators.required],
-      firstName: ['', Validators.required],
+      id: [''],
+
+      lastname: ['', Validators.required],
+      firstname: ['', Validators.required],
       email: [
         '',
         [Validators.required, Validators.email, this.emailPatternValidator()],
       ],
+      rolee: ['', Validators.required],
+
       password: [
         '',
         [
@@ -102,24 +112,35 @@ export class ListjsComponent {
     });
 
     this.findall();
+    this.fetchRoles();
+
     /**
      * fetches data
      */
     this.ListJsList.subscribe((x) => {
       this.ListJsDatas = Object.assign([], x);
+      console.log('ffffff', this.ListJsDatas);
     });
   }
+  // methodes recupération de toutes les roles
+  fetchRoles() {
+    this.roleService.getAllRoles().subscribe((roles) => {
+      this.roles = roles;
+    });
+  }
+  //affichage de toutes les users
   findall() {
-    // this.userService.fiddalluser().subscribe(
-    //   (user) => {
-    //     this.ListJsDatas = user;
-    //     console.log(user)
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching data:', error);
-    //     // Handle error as needed
-    //   }
-    // );
+    this.userService.getAllUsers().subscribe(
+      (user) => {
+        this.ListJsDatas = user;
+        // this.defaultRole=
+        console.log('testTest', user);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        // Handle error as needed
+      }
+    );
   }
 
   tablepageChanged(event: PageChangedEvent): void {
@@ -148,62 +169,60 @@ export class ListjsComponent {
   /**
    * Save saveListJs
    */
-  // saveListJs() {
-  //   if (this.listJsForm.valid) {
-  //     if (this.listJsForm.get('ids')?.value) {
-  //       this.ListJsDatas = this.ListJsDatas.map((data: { id: any; }) => data.id === this.listJsForm.get('ids')?.value ? { ...data, ...this.listJsForm.value } : data)
-  //     } else {
-  //       const firstName = this.listJsForm.get('firstName')?.value;
-  //       const lastName = this.listJsForm.get('lastName')?.value;
-  //       const email = this.listJsForm.get('email')?.value;
 
-  //       const password = this.listJsForm.get('password')?.value;
-
-  //     }
-  //   }
-  //   this.showModal?.hide()
-  //   setTimeout(() => {
-  //     this.listJsForm.reset();
-  //   }, 2000);
-  //   this.submitted = true
-  // }
   saveListJs() {
     this.submitted = true;
+    console.log('listjsform', this.listJsForm);
+
     if (this.listJsForm.valid) {
+      console.log('form2', this.listJsForm);
+
       const formData = { ...this.listJsForm.value };
-      // const user: User = {};
+      const user: User = {
+        id: formData.ids,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: formData.email,
+        password: formData.password,
+        role: formData.rolee,
+        //role: 'USER',
+      };
 
       if (formData.ids) {
-        console.log(formData);
-        // Update existing data
-        this.ListJsDatas = this.ListJsDatas.map((data: { id: any }) =>
-          data.id === formData.ids ? { ...data, ...formData } : data
+        const formData = { ...this.listJsForm.value };
+        console.log('aaappp', formData);
+        const user: User = {
+          id: formData.ids,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          email: formData.email,
+          password: formData.password,
+          role: formData.rolee,
+        };
+        // Update existing user
+        this.userService.updateUser(user).subscribe(
+          () => {
+            console.log('User updated successfully', user);
+            this.toastr.success('Utilisateur modifié avec succès!', 'Success');
+            this.findall();
+          },
+          (error) => {
+            console.error('Error updating user:', error);
+          }
         );
-        // user.id = formData.ids;
-
-        // this.userService.updateUser(formData.ids, formData).subscribe(
-        //   () => {
-        //     console.log('User updated successfully', formData);
-        //     this.toastr.success('Utilisateur modifié avec succès!', 'Success');
-        //     this.findall();
-        //   },
-        //   (error) => {
-        //     console.error('Error updating user:', error);
-        //   }
-        // );
       } else {
-        // Add new data
-        // this.userService.registerRh(formData).subscribe(
-        //   (response) => {
-        //     console.log('Data saved successfully!', response);
-        //     this.toastr.success('Data saved successfully!', 'Success');
-        //     this.findall()
-        //   },
-        //   (error) => {
-        //     console.error('register error', error);
-        //     this.toastr.error('Email déjà existant', 'Error');
-        //   }
-        // );
+        // Add new user
+        this.userService.createUser(user).subscribe(
+          (response) => {
+            console.log('Data saved successfully!', response);
+            this.toastr.success('Data saved successfully!', 'Success');
+            this.findall();
+          }
+          // (error) => {
+          //   console.error('register error', error);
+          //   this.toastr.error('Email déjà existant', 'Error');
+          // }
+        );
       }
 
       // Reset form and other actions
@@ -214,6 +233,7 @@ export class ListjsComponent {
       this.submitted = true;
     }
   }
+
   onHidden(): void {
     const updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = 'Add Customer';
@@ -251,8 +271,9 @@ export class ListjsComponent {
    * Confirmation mail model
    */
   deleteId: any;
-  confirm(id: any) {
-    this.deleteId = id;
+  confirm(i: any) {
+    console.log(i);
+    this.deleteId = i;
     this.deleteModal?.show();
   }
 
@@ -262,20 +283,22 @@ export class ListjsComponent {
   checkedValGet: any[] = [];
 
   // Delete Data
-  deleteData(id: any) {
-    if (id) {
-      document.getElementById('a_' + id)?.remove();
-      // this.userService.deleteUser(id).subscribe(
-      //   () => {
-      //     console.log('User deleted successfully');
-      //     this.masterSelected = false;
-      //     this.toastr.success('User deleted successfully', 'Success');
-      //     this.findall();
-      //   },
-      //   (error) => {
-      //     console.error('Error deleting user:', error);
-      //   }
-      // );
+  deleteData() {
+    console.log('id', this.deleteId);
+
+    if (this.deleteId) {
+      document.getElementById('a_' + this.deleteId)?.remove();
+      this.userService.deleteUser(this.deleteId).subscribe(
+        () => {
+          console.log('User deleted successfully');
+          this.masterSelected = false;
+          this.toastr.success('User deleted successfully', 'Success');
+          this.findall();
+        },
+        (error) => {
+          console.error('Error deleting user:', error);
+        }
+      );
     }
     this.checkedValGet.forEach((item: any) => {
       document.getElementById('a_' + item)?.remove();
@@ -289,26 +312,30 @@ export class ListjsComponent {
    * Open modal
    * @param content modal content
    */
-  editModal(id: any) {
+  editModal(id: number) {
     this.submitted = false;
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
 
     updateBtn.innerHTML = 'Update';
     this.showModal?.show();
     var listData = this.ListJsDatas[id];
-    this.listJsForm.controls['firstName'].setValue(listData.firstName);
-    this.listJsForm.controls['lastName'].setValue(listData.lastName);
+    this.listJsForm.controls['firstname'].setValue(listData.firstname);
+    this.listJsForm.controls['lastname'].setValue(listData.lastname);
     this.listJsForm.controls['email'].setValue(listData.email);
-    this.listJsForm.controls['ids'].setValue(listData.id);
+    this.listJsForm.controls['role'].setValue(listData.role);
+    this.listJsForm.controls['id'].setValue(listData.id);
+    const passwordControl = this.listJsForm.get('password') as FormControl;
+    passwordControl.clearValidators();
+    passwordControl.updateValueAndValidity();
   }
 
   // Sorting
   sortname() {
     this.ListJsDatas.sort(function (a: any, b: any) {
-      if (a.firstName < b.firstName) {
+      if (a.firstname < b.firstname) {
         return -1;
       }
-      if (a.lasttName > b.lastName) {
+      if (a.lastname > b.lastname) {
         return 1;
       }
       return 0;

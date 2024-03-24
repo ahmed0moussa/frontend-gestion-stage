@@ -15,13 +15,12 @@ import { PassResetComponent } from './account/auth/ForgetPassword/pass-reset/pas
 const routes: Routes = [
   // { path: '', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard]  },
   // { path: 'auth', component: AuthlayoutComponent, loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'visitor', pathMatch: 'full' },
   {
-    path: 'home',
+    path: 'Admin',
     component: LayoutComponent,
     loadChildren: () =>
       import('./pages/pages.module').then((m) => m.PagesModule),
-    canActivate: [AuthGuard],
   },
   {
     path: 'auth',

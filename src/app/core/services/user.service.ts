@@ -18,5 +18,5 @@ export class UserProfileService {
   register(user: User) {
     return this.http.post(`/users/register`, user);
   }
-  fiddalluser() {}
+ 
 }
