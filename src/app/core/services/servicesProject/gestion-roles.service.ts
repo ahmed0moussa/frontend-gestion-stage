@@ -17,4 +17,20 @@ export class GestionRolesService {
   getAllRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${this.apiUrl}/listRoles/all`);
   }
+
+  getRoleById(id: number): Observable<Role> {
+    return this.http.get<Role>(`${this.apiUrl}/${id}`);
+  }
+
+  createRole(Role: Role): Observable<Role> {
+    return this.http.post<Role>(this.apiUrl, Role);
+  }
+
+  updateRole(id: number, Role: Role): Observable<Role> {
+    return this.http.put<Role>(`${this.apiUrl}/${id}`, Role);
+  }
+
+  deleteRole(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
