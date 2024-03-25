@@ -8,10 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterRequest } from 'src/app/core/models/register-request';
 import { AuthentficationService } from 'src/app/core/services/servicesProject/authentfication.service';
 
 // Register Auth
-import { RegisterRequest } from 'src/app/core/models/register-request';
 
 @Component({
   selector: 'app-register',
