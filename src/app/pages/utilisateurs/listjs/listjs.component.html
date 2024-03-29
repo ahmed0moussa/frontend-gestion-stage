@@ -14,7 +14,7 @@
                     <div class="row g-4 mb-3">
                         <div class="col-sm-auto">
                             <div>
-                                <button type="button" class="btn btn-success add-btn me-2" id="create-btn" (click)="showModal.show()"><i class="ri-add-line align-bottom me-1"></i>
+                                <button (click)="validAjout()" type="button" class="btn btn-success add-btn me-2" id="create-btn" (click)="showModal.show()"><i class="ri-add-line align-bottom me-1"></i>
                                     Ajouter</button>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                     <td>
                                         <div class="d-flex gap-2">
                                             <div class="edit">
-                                                <button class="btn btn-sm btn-success edit-item-btn edit-button-yellow" (click)="editModal(data.id)">Modifier</button>
+                                                <button class="btn btn-sm btn-success edit-item-btn edit-button-yellow" (click)="editModal(i)">Modifier</button>
                                             </div>
                                             <div class="remove">
                                                 <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(data.id)">Supprimer</button>
@@ -104,11 +104,11 @@
             </div>
             <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form">
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="" formControlName="ids" />
+                    <input type="hidden" name="id" value="" formControlName="id" />
 
                     <div class="mb-3" id="modal-id " style="display: none;" >
                         <label for="id-field" class="form-label">ID</label>
-                        <input type="text" id="id-field" class="form-control" formControlName="ids" placeholder="ID" readonly />
+                        <input type="text" id="id-field" class="form-control" formControlName="id" placeholder="ID" readonly />
                     </div>
 
                     <div class="mb-3">
@@ -135,15 +135,55 @@
                     </div>
 
 
+
+                    <!-------- <div class="mb-3">
+                        <label for="rolee-field" class="form-label">Role</label>
+                        <input type="rolee" id="rolee-field" class="form-control" placeholder="Enter rolee" formControlName="rolee"  />
+                        <div *ngIf="submitted && listJsForm.controls['rolee'].errors" class="text-danger mt-1">
+                           
+                        </div>
+                    </div> -->
+
+<!-- 
                     <div class="mb-3">
                         <label for="roleSelect" class="form-label">Role</label>
                         <select id="roleSelect" class="form-control" formControlName="rolee">
-                          <option *ngFor="let role of roles" [selected]=""
+                          <option *ngFor="let role of roles" [selected]="role ===this.roles[0]"
                           [value]="role.name">{{ role.name }}</option>
                         </select>
-                      </div>
+                      </div> -->
 
-                    <div class="mb-3">
+                      <!-- <div class="mb-3">
+                        <label for="roleSelect" class="form-label">Role</label>
+                        <select (click)="pushRole( rolee)" id="roleSelect" class="form-control" formControlName="rolee">
+                          <option  *ngFor="let role of roles" [selected]="role ===this.roles[0]"
+                          [value]="role.name">{{ role.name }}</option>
+                        </select>
+                      </div>  -->
+                      <div class="form-control ng-untouched ng-pristine ng-invalid">
+                        <label for="roleSelect" class="form-label" >Role  </label>
+                        <select (click)="pushRole($event)" id="roleSelect" >
+                            <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+                        </select>
+                    </div>
+                    
+                    
+
+
+                      
+
+<!---->
+
+<!-- <div class="form-group">                                              
+ 
+        <p-multiSelect [options]="labelValu" formControlName="rolee" optionLabel="role" oplaceholder="Select Cities"></p-multiSelect>
+   
+</div> -->
+<!---->
+
+
+                      
+                    <div class="mb-3" *ngIf="addForm">
                         <label for="date-field" class="form-label">Password</label>
                         <input type="password" id="date-field" class="form-control"  formControlName="password" [ngClass]="{ 'is-invalid': submitted && form['password'].errors }">
                         <div *ngIf="listJsForm.get('cpassword')?.hasError('passwordMismatch')" class="text-danger mt-1">
@@ -154,7 +194,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3" *ngIf="addForm">
                         <label for="date-field" class="form-label">confirm password</label>
                         <input type="password" id="date-field" class="form-control"  formControlName="cpassword" [ngClass]="{ 'is-invalid': submitted && form['cpassword'].errors }">
                         <div *ngIf="listJsForm.get('cpassword')?.hasError('passwordMismatch')" class="text-danger mt-1">

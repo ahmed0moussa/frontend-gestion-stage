@@ -21,8 +21,8 @@ export class GestionUsersService {
   getUserById(UserId: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/getUserById/${UserId}`);
   }
-  updateUser( User: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/createUser`, User);
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/createUser`, user);
   }
   // updateUser(UserId: number, User: User): Observable<User> {
   //   return this.http.put<User>(`${this.apiUrl}/UpdateUser/${UserId}`, User);

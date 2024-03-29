@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
+import { MultiSelectModule } from 'primeng/multiselect';
 import { UtilisateursRoutingModule } from './utilisateurs-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -15,34 +15,37 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SimplebarAngularModule } from 'simplebar-angular';
 // component
 
-
-// Ng Search 
+// Ng Search
 import { NgPipesModule } from 'ngx-pipes';
 import { ListjsComponent } from './listjs/listjs.component';
 
 // Sorting page
 
 import { NgbdListSortableHeader } from './listjs/listjs-sortable.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
     ListjsComponent,
     NgbdListSortableHeader,
-    NgbdListSortableHeader
+    NgbdListSortableHeader,
   ],
   imports: [
     CommonModule,
+    MultiSelectModule,
     UtilisateursRoutingModule,
     SharedModule,
     PaginationModule.forRoot(),
     NgPipesModule,
     BsDatepickerModule,
     ModalModule,
+
     FormsModule,
     ReactiveFormsModule,
     SimplebarAngularModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class UtilisateursModule { }
+export class UtilisateursModule {}

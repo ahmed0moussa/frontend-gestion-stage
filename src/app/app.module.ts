@@ -116,6 +116,7 @@ if (environment.defaultauth === 'firebase') {
     ToastrModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+
     AngularFireAuthModule,
     RouterModule.forRoot([]),
     JwtModule.forRoot({

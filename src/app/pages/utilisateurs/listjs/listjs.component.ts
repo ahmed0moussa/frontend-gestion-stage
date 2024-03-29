@@ -25,9 +25,12 @@ import { UserProfileService } from 'src/app/core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { GestionUsersService } from 'src/app/core/services/servicesProject/gestion-users.service';
 import { GestionRolesService } from 'src/app/core/services/servicesProject/gestion-roles.service';
-import { User } from 'src/app/core/models/user';
 import { Role } from 'src/app/core/models/role';
 import { ListService } from './listjs.service';
+import { LabelValu } from 'src/app/core/models/label-valu';
+import { MultiSelect } from 'primeng/multiselect';
+import { MultiselectRole } from 'src/app/core/models/multiselect-role';
+import { User } from 'src/app/core/models/user';
 
 @Component({
   selector: 'app-listjs',
@@ -44,19 +47,21 @@ export class ListjsComponent {
   checkedList: any;
   masterSelected!: boolean;
   ListJsDatas: any;
-
+  labelValu: LabelValu[] = [];
   paginationDatas: any;
   attributedata: any;
   existingData: any;
   fuzzyData: any;
-
+  addForm!: boolean; // pour desactiver 2 champs pwd et confirm pwd
+  arayRole!: string[];
+  selectedRoles: string[] = [];
   existingTerm: any;
   fuzzyTerm: any;
   dataterm: any;
   term: any;
   roles!: any;
   defaultRole!: any;
-
+  multiRoles: MultiselectRole = new MultiselectRole();
   // Table data
   ListJsList!: Observable<ListJsModel[]>;
   total: Observable<number>;
@@ -98,7 +103,7 @@ export class ListjsComponent {
         '',
         [Validators.required, Validators.email, this.emailPatternValidator()],
       ],
-      rolee: ['', Validators.required],
+      //rolee: ['[]', Validators.required],
 
       password: [
         '',
@@ -113,6 +118,7 @@ export class ListjsComponent {
 
     this.findall();
     this.fetchRoles();
+    this.getListRoles();
 
     /**
      * fetches data
@@ -128,6 +134,28 @@ export class ListjsComponent {
       this.roles = roles;
     });
   }
+  // meth pour affichier les roles dans champ role in update
+  validAjout() {
+    this.addForm = true;
+  }
+  // pushRole(event: any) {
+  //   const roleName: string = event.target.value;
+  //   // Check if the selected role is not already in the array
+  //   if (!this.selectedRoles.includes(roleName)) {
+  //     // If not, add it to the array
+  //     this.selectedRoles.push(roleName);
+  //     console.log('array', this.selectedRoles);
+  //   }
+  // }
+  pushRole(event: any) {
+    const roleName: string = event.target.value;
+    // Clear the selectedRoles array before adding the new role
+    this.selectedRoles = [];
+    // Add the selected role to the array
+    this.selectedRoles.push(roleName);
+    console.log('array', this.selectedRoles);
+  }
+
   //affichage de toutes les users
   findall() {
     this.userService.getAllUsers().subscribe(
@@ -172,7 +200,6 @@ export class ListjsComponent {
 
   saveListJs() {
     this.submitted = true;
-    console.log('listjsform', this.listJsForm);
 
     if (this.listJsForm.valid) {
       console.log('form2', this.listJsForm);
@@ -184,10 +211,10 @@ export class ListjsComponent {
         lastname: formData.lastname,
         email: formData.email,
         password: formData.password,
-        role: formData.rolee,
-        //role: 'USER',
+        //role: formData.rolee,
+        //role: [formData.rolee],
+        role: this.selectedRoles,
       };
-
       if (formData.ids) {
         const formData = { ...this.listJsForm.value };
         console.log('aaappp', formData);
@@ -197,7 +224,8 @@ export class ListjsComponent {
           lastname: formData.lastname,
           email: formData.email,
           password: formData.password,
-          role: formData.rolee,
+          // role: formData.rolee,
+          role: this.selectedRoles,
         };
         // Update existing user
         this.userService.updateUser(user).subscribe(
@@ -211,17 +239,19 @@ export class ListjsComponent {
           }
         );
       } else {
+        console.log('user', user);
+
         // Add new user
         this.userService.createUser(user).subscribe(
           (response) => {
             console.log('Data saved successfully!', response);
             this.toastr.success('Data saved successfully!', 'Success');
             this.findall();
+          },
+          (error) => {
+            console.error('register error', error);
+            this.toastr.error('Email déjà existant', 'Error');
           }
-          // (error) => {
-          //   console.error('register error', error);
-          //   this.toastr.error('Email déjà existant', 'Error');
-          // }
         );
       }
 
@@ -309,24 +339,27 @@ export class ListjsComponent {
   }
 
   /**
-   * Open modal
+   * Open modal / LES donnee dans modal
    * @param content modal content
    */
   editModal(id: number) {
     this.submitted = false;
+    this.addForm = false;
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-
+    // console.log('id', data.id );
     updateBtn.innerHTML = 'Update';
     this.showModal?.show();
     var listData = this.ListJsDatas[id];
+    console.log('iddd', listData.nameRoles);
+
     this.listJsForm.controls['firstname'].setValue(listData.firstname);
     this.listJsForm.controls['lastname'].setValue(listData.lastname);
     this.listJsForm.controls['email'].setValue(listData.email);
-    this.listJsForm.controls['role'].setValue(listData.role);
+    this.listJsForm.controls['rolee'].setValue(listData.nameRoles);
     this.listJsForm.controls['id'].setValue(listData.id);
-    const passwordControl = this.listJsForm.get('password') as FormControl;
-    passwordControl.clearValidators();
-    passwordControl.updateValueAndValidity();
+    // const passwordControl = this.listJsForm.get('password') as FormControl;
+    // passwordControl.clearValidators();
+    // passwordControl.updateValueAndValidity();
   }
 
   // Sorting
@@ -357,5 +390,15 @@ export class ListjsComponent {
 
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
+  }
+  // meth multiselect Roles
+  getListRoles() {
+    this.roleService.getListRoles().subscribe({
+      next: (data) => {
+        this.labelValu = data;
+        console.log('cc', this.labelValu);
+      },
+      error: console.log,
+    });
   }
 }
